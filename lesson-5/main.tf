@@ -1,6 +1,6 @@
 module "s3_backend" {
   source      = "./modules/s3-backend"
-  bucket_name = "goit-devops-hw-state-20250626"
+  bucket_name = "goit-devops-hw-state-20250702"
   table_name  = "terraform-locks"
 }
 
@@ -17,4 +17,14 @@ module "ecr" {
   source       = "./modules/ecr"
   ecr_name     = "lesson-5-ecr"
   scan_on_push = true
+}
+
+module "eks" {
+  source           = "./modules/eks"
+  cluster_name     = "lesson-7-eks-cluster"
+  subnet_ids       = module.vpc.private_subnet_ids
+  cluster_role_name   = "eksClusterRole"
+  cluster_role_arn = "arn:aws:iam::121905340549:role/eksClusterRole"
+  node_role_arn    = "arn:aws:iam::121905340549:role/eksNodeGroupRole"
+  region           = "us-west-2"
 }
