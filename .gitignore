@@ -40,3 +40,4 @@ pip-log.txt
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+lesson-5/charts/django-app/charts/*.tgz

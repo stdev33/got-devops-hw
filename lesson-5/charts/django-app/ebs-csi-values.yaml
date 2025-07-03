@@ -1,0 +1,6 @@
+controller:
+  volumeModificationFeature:
+    enabled: true
+  serviceAccount:
+    create: true
+    name: ebs-csi-controller-sa

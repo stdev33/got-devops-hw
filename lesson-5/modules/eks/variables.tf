@@ -13,6 +13,11 @@ variable "cluster_role_arn" {
   type        = string
 }
 
+variable "node_role_name" {
+  description = "IAM role name for EKS Node Group"
+  type        = string
+}
+
 variable "node_role_arn" {
   description = "IAM role ARN for the EKS worker nodes"
   type        = string
@@ -27,4 +32,9 @@ variable "region" {
 variable "cluster_role_name" {
   description = "The name of the IAM role for the EKS cluster"
   type        = string
+}
+
+variable "node_instance_profile_name" {
+  type        = string
+  description = "IAM Instance Profile for worker nodes"
 }

@@ -8,6 +8,21 @@ resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSServicePolicy" {
   role       = var.cluster_role_name
 }
 
+resource "aws_iam_role_policy_attachment" "nodegroup_ecr_readonly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = var.node_role_name
+}
+
+resource "aws_iam_role_policy_attachment" "nodegroup_ebs_csi" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = var.node_role_name
+}
+
+resource "aws_iam_role_policy_attachment" "nodegroup_ebs_csi_driver" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = var.node_role_name
+}
+
 resource "aws_eks_cluster" "this" {
   name     = var.cluster_name
   role_arn = var.cluster_role_arn
@@ -18,7 +33,10 @@ resource "aws_eks_cluster" "this" {
 
   depends_on = [
     aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy
+    aws_iam_role_policy_attachment.cluster_AmazonEKSServicePolicy,
+    aws_iam_role_policy_attachment.nodegroup_ecr_readonly,
+    aws_iam_role_policy_attachment.nodegroup_ebs_csi,
+    aws_iam_role_policy_attachment.nodegroup_ebs_csi_driver
   ]
 }
 
@@ -35,4 +53,5 @@ resource "aws_eks_node_group" "this" {
   }
 
   instance_types = ["t3.small"]
+
 }
