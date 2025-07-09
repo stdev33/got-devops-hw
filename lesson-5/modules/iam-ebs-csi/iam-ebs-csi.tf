@@ -25,16 +25,9 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy_attach" {
 resource "aws_iam_openid_connect_provider" "oidc" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [local.oidc_thumbprint]
-  url             = data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+  url             = var.cluster_oidc_issuer
 }
 
-data "aws_eks_cluster" "eks_cluster" {
-  name = "lesson-7-eks-cluster"
-}
-
-data "aws_eks_cluster_auth" "eks" {
-  name = data.aws_eks_cluster.eks_cluster.name
-}
 
 resource "aws_iam_role" "ebs_csi_oidc_role" {
   name = "AmazonEKS_EBS_CSI_DriverOIDCRole"
@@ -50,7 +43,7 @@ resource "aws_iam_role" "ebs_csi_oidc_role" {
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
           StringEquals = {
-            "${replace(data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer, "https://", "")}:sub" = "system:serviceaccount:kube-system:ebs-csi-controller-sa"
+            "${replace(var.cluster_oidc_issuer, "https://", "")}:sub" = "system:serviceaccount:kube-system:ebs-csi-controller-sa"
           }
         }
       }
