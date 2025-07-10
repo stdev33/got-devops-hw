@@ -1,3 +1,19 @@
+data "aws_eks_cluster" "eks" {
+  name = var.cluster_name
+}
+
+data "aws_eks_cluster_auth" "eks" {
+  name = var.cluster_name
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = data.aws_eks_cluster.eks.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority[0].data)
+    token                  = data.aws_eks_cluster_auth.eks.token
+  }
+}
+
 module "s3_backend" {
   source      = "./modules/s3-backend"
   bucket_name = "goit-devops-hw-state-20250708"
@@ -29,11 +45,25 @@ module "eks" {
   cluster_role_arn = "arn:aws:iam::121905340549:role/eksClusterRole"
   node_role_arn    = "arn:aws:iam::121905340549:role/eksNodeGroupRole"
   region           = "us-west-2"
+  oidc_provider_url = null
+  oidc_provider_arn = null
 }
 
 module "iam_ebs_csi" {
   source = "./modules/iam-ebs-csi"
 
   cluster_oidc_issuer = module.eks.cluster_oidc_issuer
+  oidc_provider_arn   = module.eks.oidc_provider_arn
+  oidc_provider_url   = module.eks.oidc_provider_url
 }
 
+module "jenkins" {
+  source       = "./modules/jenkins"
+  cluster_name = module.eks.eks_cluster_name
+  kubeconfig    = var.kubeconfig
+
+  providers = {
+    helm = helm
+    kubernetes = kubernetes
+  }
+}

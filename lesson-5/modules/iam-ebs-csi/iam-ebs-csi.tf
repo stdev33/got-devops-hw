@@ -22,13 +22,6 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
 
-resource "aws_iam_openid_connect_provider" "oidc" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [local.oidc_thumbprint]
-  url             = var.cluster_oidc_issuer
-}
-
-
 resource "aws_iam_role" "ebs_csi_oidc_role" {
   name = "AmazonEKS_EBS_CSI_DriverOIDCRole"
 
@@ -38,7 +31,7 @@ resource "aws_iam_role" "ebs_csi_oidc_role" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.oidc.arn
+          Federated = var.oidc_provider_arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {

@@ -38,3 +38,13 @@ variable "node_instance_profile_name" {
   type        = string
   description = "IAM Instance Profile for worker nodes"
 }
+
+variable "oidc_provider_url" {
+  description = "The URL of the OIDC identity provider"
+  type        = string
+}
+
+variable "oidc_provider_arn" {
+  description = "The ARN of the OIDC identity provider"
+  type        = string
+}

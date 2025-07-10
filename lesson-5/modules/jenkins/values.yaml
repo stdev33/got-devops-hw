@@ -1,0 +1,47 @@
+controller:
+  image:
+    repository: jenkins/jenkins
+    tag: "2.518-jdk21"
+    pullPolicy: "Always"
+
+  env:
+    - name: JENKINS_VERSION
+      value: "2.518"
+
+  admin:
+    username: admin
+    password: admin123
+
+  serviceType: LoadBalancer
+  servicePort: 80
+  service:
+    port: 80
+    targetPort: 8080
+
+  resources:
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+    requests:
+      cpu: "250m"
+      memory: "512Mi"
+
+  persistentVolume:
+    enabled: true
+    storageClass: ""
+    size: 10Gi
+
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
+    - credentials-binding
+    - github
+    - docker-plugin
+    - docker-workflow
+    - job-dsl
+
+  additionalConfigMaps:
+    - name: jenkins-plugins
+      mountPath: /var/jenkins_config
