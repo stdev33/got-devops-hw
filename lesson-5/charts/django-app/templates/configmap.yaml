@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  DJANGO_DEBUG: "False"
+  DJANGO_SECRET_KEY: {{ .Values.env.DJANGO_SECRET_KEY | quote }}
+  DJANGO_ALLOWED_HOSTS: {{ .Values.env.DJANGO_ALLOWED_HOSTS | quote }}
+  DATABASE_URL: "postgresql://{{ .Values.postgresql.auth.username }}:{{ .Values.postgresql.auth.password }}@{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.auth.database }}"

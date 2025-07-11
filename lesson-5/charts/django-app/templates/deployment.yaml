@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo "Checking PostgreSQL readiness..."
+              until nc -z {{ .Release.Name }}-postgresql 5432; do
+                echo "waiting for postgres"
+                sleep 2
+              done
+              echo "Postgres is available"
+              sleep 5
+      containers:
+        - name: django
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-config
+          env:
+            - name: DJANGO_ALLOWED_HOSTS
+              value: {{ .Values.env.DJANGO_ALLOWED_HOSTS | quote }}
