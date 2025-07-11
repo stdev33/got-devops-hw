@@ -67,3 +67,11 @@ module "jenkins" {
     kubernetes = kubernetes
   }
 }
+
+module "argo_cd" {
+  source            = "./modules/argo_cd"
+  cluster_name      = module.eks.cluster_name
+  server_ingress_host = var.argocd_hostname
+  namespace    = "argocd"
+  chart_version = "5.46.4"
+}

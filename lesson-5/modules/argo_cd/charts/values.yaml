@@ -1,0 +1,21 @@
+applications:
+  - name: django-app
+    namespace: default
+    project: default
+    source:
+      repoURL: "https://github.com/stdev33/got-devops-hw.git"
+      targetRevision: lesson-8-9
+      path: "lesson-5/charts/django-app"
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: default
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+repositories:
+  - url: "https://github.com/stdev33/got-devops-hw.git"
+    type: git
+repoConfig:
+  insecure: "true"
+  enableLfs: "true"

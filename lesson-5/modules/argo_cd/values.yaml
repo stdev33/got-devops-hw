@@ -1,0 +1,19 @@
+global:
+  image:
+    tag: "latest"
+server:
+  ingress:
+    enabled: false
+    hosts:
+      - name: ${server_ingress_host}
+    path: /
+    annotations:
+      kubernetes.io/ingress.class: nginx
+  service:
+    type: LoadBalancer
+    port: 80
+    targetPort: 8080
+configs:
+  params:
+    annotations: {}
+  # additional ArgoCD config
