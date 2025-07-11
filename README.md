@@ -62,6 +62,42 @@ kubectl rollout restart deployment django-app-deployment
 kubectl get pods -l app=django-app
 ```
 
+## 🚀 Apply Terraform
+
+Provision all infrastructure and Helm releases (Jenkins and Argo CD) in one go:
+
+```bash
+cd lesson-5
+terraform init
+terraform plan
+terraform apply
+```
+
+## 🧪 Verify Jenkins Pipeline
+
+1. Open your Jenkins UI, e.g. `http://<JENKINS_HOST>/`.
+2. Select the pipeline job (e.g. `lesson-5-pipeline`) in the list.
+3. Click **Build Now** or push a change to the Git repo to trigger an automatic build.
+4. Inspect the console output to ensure that stages **Build & Push Docker Image** and **Update Helm Chart and Push** complete successfully.
+
+## 🔄 View in Argo CD
+
+1. Open the Argo CD UI at the LoadBalancer address shown by:
+   ```bash
+   kubectl -n argocd get svc argo-cd-argocd-server \
+     -o jsonpath="{.status.loadBalancer.ingress[0].hostname}"
+   ```
+   then navigate to `https://<hostname>`.
+2. Log in with:
+   - Username: `admin`
+   - Password:
+     ```bash
+     kubectl -n argocd get secret argocd-initial-admin-secret \
+       -o jsonpath="{.data.password}" | base64 --decode && echo
+     ```
+3. In **Applications**, click **REFRESH APPS** to see your `django-app` entry.
+4. If syncPolicy is automated, any new Helm chart commit (from Jenkins) will be deployed automatically; otherwise click **SYNC**.
+
 ---
 
 ## 🧠 Notes
