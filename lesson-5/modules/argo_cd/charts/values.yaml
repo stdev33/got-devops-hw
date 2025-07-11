@@ -4,7 +4,7 @@ applications:
     project: default
     source:
       repoURL: "https://github.com/stdev33/got-devops-hw.git"
-      targetRevision: lesson-8-9
+      targetRevision: main
       path: "lesson-5/charts/django-app"
     destination:
       server: https://kubernetes.default.svc

@@ -71,7 +71,7 @@ spec:
           sh '''
             git config user.name "Jenkins CI"
             git config user.email "ci@example.com"
-            WORKING_BRANCH="lesson-8-9"
+            WORKING_BRANCH="main"
             # Ensure we are on ${WORKING_BRANCH} branch
             git checkout ${WORKING_BRANCH}
             # Pull latest changes
@@ -82,7 +82,7 @@ spec:
             git add lesson-5/charts/django-app/values.yaml
             git commit -m "ci: bump image tag to ${IMAGE_TAG}"
             # Use stored credentials to push
-            git push https://${GITHUB_PAT}@github.com/stdev33/got-devops-hw.git lesson-8-9
+            git push https://${GITHUB_PAT}@github.com/stdev33/got-devops-hw.git ${WORKING_BRANCH}
           '''
         }
       }
