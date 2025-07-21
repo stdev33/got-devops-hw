@@ -47,9 +47,9 @@ terraform apply        # Create infrastructure on AWS (VPC, ECR, etc.)
 ### 2. Build and Push Docker Image to ECR
 
 ```bash
-docker buildx build --platform linux/amd64 -t lesson-5-ecr:latest . --load
-docker tag lesson-5-ecr:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/lesson-5-ecr:latest
-docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/lesson-5-ecr:latest
+docker buildx build --platform linux/amd64 -t final-project-ecr:latest . --load
+docker tag final-project-ecr:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/final-project-ecr:latest
+docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/final-project-ecr:latest
 ```
 
 Replace `<aws_account_id>` and `<region>` with your actual values (e.g., `121905340549`, `us-west-2`).

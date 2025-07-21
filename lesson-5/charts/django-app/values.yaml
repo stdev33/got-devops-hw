@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: 121905340549.dkr.ecr.us-west-2.amazonaws.com/lesson-5-ecr
+  repository: 121905340549.dkr.ecr.us-west-2.amazonaws.com/final-project-ecr
   tag: "25-ca20b8b"
 
 service:

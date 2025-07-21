@@ -35,7 +35,7 @@ spec:
     }
   }
   environment {
-    ECR_REGISTRY = "121905340549.dkr.ecr.us-west-2.amazonaws.com/lesson-5-ecr"
+    ECR_REGISTRY = "121905340549.dkr.ecr.us-west-2.amazonaws.com/final-project-ecr"
     IMAGE_NAME   = "app"
   }
   stages {
