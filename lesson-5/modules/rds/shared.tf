@@ -2,6 +2,9 @@ resource "aws_db_subnet_group" "default" {
   name       = "${var.name}-subnet-group"
   subnet_ids = var.publicly_accessible ? var.subnet_public_ids : var.subnet_private_ids
   tags       = var.tags
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group" "rds" {

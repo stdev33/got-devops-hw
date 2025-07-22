@@ -16,7 +16,7 @@ provider "helm" {
 
 module "s3_backend" {
   source      = "./modules/s3-backend"
-  bucket_name = "goit-devops-hw-state-20250721"
+  bucket_name = var.s3_bucket_name
   table_name  = "terraform-locks"
 }
 
@@ -37,7 +37,7 @@ module "ecr" {
 
 module "eks" {
   source           = "./modules/eks"
-  cluster_name     = "final-project-eks-cluster"
+  cluster_name     = var.cluster_name
   subnet_ids       = module.vpc.private_subnet_ids
   node_instance_profile_name = "eksNodeGroupRole"
   node_role_name   = "eksNodeGroupRole"

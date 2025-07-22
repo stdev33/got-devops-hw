@@ -2,6 +2,12 @@ data "aws_eks_cluster" "cluster" {
   name = var.cluster_name
 }
 
+resource "kubernetes_namespace" "jenkins" {
+  metadata {
+    name = "jenkins"
+  }
+}
+
 data "aws_iam_openid_connect_provider" "oidc" {
   url = data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer
 }
@@ -65,8 +71,12 @@ resource "helm_release" "jenkins" {
   namespace        = "jenkins"
   repository       = "https://charts.jenkins.io"
   chart            = "jenkins"
-  version          = "5.8.67"
+  version          = "5.8.68"
   create_namespace = true
+
+  depends_on = [
+    kubernetes_namespace.jenkins
+  ]
 
   values = [
     file("${path.module}/values.yaml")
